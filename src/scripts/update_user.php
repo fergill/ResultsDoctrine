@@ -10,7 +10,6 @@
  */
 
 use MiW\Results\Entity\User;
-use MiW\Results\Entity\Result;
 use MiW\Results\Utility\Utils;
 
 require dirname(__DIR__, 2) . '/vendor/autoload.php';
@@ -20,18 +19,12 @@ Utils::loadEnv(dirname(__DIR__, 2));
 
 $entityManager = Utils::getEntityManager();
 
-if ($argc < 3 || $argc > 4) {
-    $fich = basename(__FILE__);
-    echo <<< MARCA_FIN
-    Usage: $fich <Result> <UserId> [<Timestamp>]
-MARCA_FIN;
+if ($argc < 7 || $argc > 7) {
+    echo  "Se necesitan estos 6 parametros: [userId] [nombre] [email] [password] [enabled] [isAdmin]\n";
     exit(0);
+
 }
-
-$newResult    = (int) $argv[1];
-$userId       = (int) $argv[2];
-$newTimestamp = $argv[3] ?? new DateTime('now');
-
+$userId = (int) $argv[1];
 /** @var User $user */
 $user = $entityManager
     ->getRepository(User::class)
@@ -41,12 +34,16 @@ if (null === $user) {
     exit(0);
 }
 
-$result = new Result($newResult, $user, $newTimestamp);
+$user->setUsername((string)$argv[2] ?? $_ENV['ADMIN_USER_NAME']);
+$user->setEmail((string)$argv[3] ?? $_ENV['ADMIN_USER_EMAIL']);
+$user->setPassword((string)$argv[4] ?? $_ENV['ADMIN_USER_PASSWD']);
+$user->setEnabled((boolean)$argv[5] ?? true);
+$user->setIsAdmin((boolean)$argv[6] ?? true);
+
 try {
-    $entityManager->persist($result);
+    $entityManager->persist($user);
     $entityManager->flush();
-    echo 'Created Result with ID ' . $result->getId()
-        . ' USER ' . $user->getUsername() . PHP_EOL;
+    echo 'Actualizado el usuario con ID #' . $user->getId() . PHP_EOL;
 } catch (Exception $exception) {
-    echo $exception->getMessage();
+    echo $exception->getMessage() . PHP_EOL;
 }

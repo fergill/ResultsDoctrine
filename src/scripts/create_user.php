@@ -19,34 +19,33 @@ Utils::loadEnv(dirname(__DIR__, 2));
 
 $entityManager = Utils::getEntityManager();
 
-if ($argc <2 || $argc >3) {
+if ($argc < 3 || $argc > 7) {
     $fich = basename(__FILE__);
     echo <<< MARCA_FIN
-    Usage: $fich <UserId> 
+    Usage: $fich <Username> <Email> <Password> [<Enabled>] [<isAdmin>]
 MARCA_FIN;
     exit(0);
 }
 
+$username    = (string) $argv[1];
+$email       = (string) $argv[2];
+$password    = (string) $argv[3];
+$enabled     = (int) $argv[4]??1;
+$admin     = (int) $argv[5]??0;
 
-$userId       = (int) $argv[1];
-
+$user = new User();
+$user->setUsername($username);
+$user->setEmail($email);
+$user->setPassword($password);
+$user->setEnabled($enabled);
+$user->setIsAdmin($admin);
 try {
-    /** @var User $user */
-    $user = $entityManager
-        ->getRepository(User::class)
-        ->findOneBy(['id' => $userId]);
-    if (null === $user) {
-        echo "Usuario con Id $userId no encontrado" . PHP_EOL;
-        exit(0);
-    }else{
-        $entityManager->remove($user);
-        $entityManager->flush();
-    }
+    $entityManager->persist($user);
+    $entityManager->flush();
     if (in_array('--json', $argv, true)) {
         echo json_encode($user, JSON_PRETTY_PRINT). PHP_EOL;
     }
-    echo 'Borrado el usuario con ID #' . $userId . PHP_EOL;
+    echo 'Created  User with ID #' . $user->getId() . PHP_EOL;
 } catch (Exception $exception) {
-
     echo $exception->getMessage() . PHP_EOL;
 }
