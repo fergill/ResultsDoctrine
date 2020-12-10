@@ -14,32 +14,33 @@ require dirname(__DIR__, 2) . '/vendor/autoload.php';
 use MiW\Results\Entity\User;
 use MiW\Results\Utility\Utils;
 
-$entityManager = Utils::getEntityManager();
-
 // Carga las variables de entorno
 Utils::loadEnv(dirname(__DIR__, 2));
 
-$username = $_POST['name'];
-$userRepository = $entityManager->getRepository(User::class);
-$user = $userRepository->findOneBy(['username' => $username]);
+$entityManager = Utils::getEntityManager();
 
-
-if ($argc <= 1) {
-    echo "error en los parámetros";
+if( $argc < 2 || $argc > 3 ) {
+    $fichero = basename(__FILE__);
+    echo <<<MARCA_FIN
+        Usage: $fichero <userId>
+    MARCA_FIN;
     exit(0);
 }
 
+$userId = (int) $argv[1];
 
+/** @var User $user */
+$user = $entityManager
+    ->getRepository(User::class)
+    ->findOneBy(['id' => $userId]);
+
+if (null === $user) {
+    echo "Usuario $userId no encontrado" . PHP_EOL;
+    exit(0);
+}
 
 if (in_array('--json', $argv, true)) {
     echo json_encode($user, JSON_PRETTY_PRINT);
 } else {
-    echo PHP_EOL . sprintf(
-            '  %2s: %20s %30s %7s' . PHP_EOL,
-            $user->getId(),
-            $user->getUsername(),
-            $user->getEmail(),
-            ($user->isEnabled()) ? 'true' : 'false'
-        ),
-        PHP_EOL;
+    echo json_encode($user);
 }
