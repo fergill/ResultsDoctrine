@@ -34,17 +34,27 @@ class UserTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->user = new User();
+        $this->user = new User(
+            'luis',
+            'luis@aol.com',
+            '123',
+            1,
+            1);
     }
 
     /**
      * @covers \MiW\Results\Entity\User::__construct()
+     * @covers |MiW\Results\Entity\User::getUsername()
+     * @covers |MiW\Results\Entity\User::getEmail()
+     * @covers |MiW\Results\Entity\User::isEnabled()
+     * @covers |MiW\Results\Entity\User::isAdmin()
      */
     public function testConstructor(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        self::assertEquals('luis', $this->user->getUsername());
+        self::assertNotEquals('luis@gmail.com', $this->user->getEmail());
+        self::assertTrue($this->user->isEnabled());
+        self::assertTrue($this->user->isAdmin());
     }
 
     /**
@@ -52,9 +62,7 @@ class UserTest extends TestCase
      */
     public function testGetId(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        self::assertEquals(0, $this->user->getId());
     }
 
     /**
@@ -63,9 +71,8 @@ class UserTest extends TestCase
      */
     public function testGetSetUsername(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->user->setUsername("carlos");
+        self::assertEquals("carlos", $this->user->getUsername());
     }
 
     /**
@@ -74,9 +81,8 @@ class UserTest extends TestCase
      */
     public function testGetSetEmail(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->user->setEmail("carlos@yopmail.com");
+        self::assertEquals("carlos@yopmail.com", $this->user->getEmail());
     }
 
     /**
@@ -85,9 +91,8 @@ class UserTest extends TestCase
      */
     public function testIsSetEnabled(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->user->setEnabled(false);
+        self::assertFalse($this->user->isEnabled());
     }
 
     /**
@@ -96,9 +101,8 @@ class UserTest extends TestCase
      */
     public function testIsSetAdmin(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->user->setIsAdmin(true);
+        self::assertTrue($this->user->isAdmin());
     }
 
     /**
@@ -107,9 +111,7 @@ class UserTest extends TestCase
      */
     public function testSetValidatePassword(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        self::assertTrue($this->user->validatePassword("123"));
     }
 
     /**
@@ -117,9 +119,15 @@ class UserTest extends TestCase
      */
     public function testToString(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
+        $toString = sprintf(
+            '%3d - %20s - %30s - %1d - %1d',
+            $this->user->getId(),
+            $this->user->getUsername(),
+            $this->user->getEmail(),
+            $this->user->isEnabled(),
+            $this->user->isAdmin()
         );
+        self::assertEquals($toString, $this->user, "los strings son iguales");
     }
 
     /**
@@ -127,8 +135,13 @@ class UserTest extends TestCase
      */
     public function testJsonSerialize(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
+        $array = array(
+            'id'            => $this->user->getId(),
+            'username'      => $this->user->getUsername(),
+            'email'         => $this->user->getEmail(),
+            'enabled'       => $this->user->isEnabled(),
+            'admin'         => $this->user->isAdmin()
         );
+        self::assertEquals(json_encode($array), json_encode($this->user), "los objetos son iguales");
     }
 }
