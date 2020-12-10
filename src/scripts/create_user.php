@@ -12,7 +12,7 @@
 use MiW\Results\Entity\User;
 use MiW\Results\Utility\Utils;
 
-require dirname(__DIR__, 2) . '../vendor/autoload.php';
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 // Carga las variables de entorno
 Utils::loadEnv(dirname(__DIR__, 2));
