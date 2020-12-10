@@ -12,7 +12,7 @@
 use MiW\Results\Entity\User;
 use MiW\Results\Utility\Utils;
 
-require dirname(__DIR__, 2) . '/vendor/autoload.php';
+require dirname(__DIR__, 2) . '../vendor/autoload.php';
 
 // Carga las variables de entorno
 Utils::loadEnv(dirname(__DIR__, 2));
@@ -20,9 +20,9 @@ Utils::loadEnv(dirname(__DIR__, 2));
 $entityManager = Utils::getEntityManager();
 
 if ($argc < 3 || $argc > 7) {
-    $fich = basename(__FILE__);
+    $fichero = basename(__FILE__);
     echo <<< MARCA_FIN
-    Usage: $fich <Username> <Email> <Password> [<Enabled>] [<isAdmin>]
+    Usage: $fichero <Username> <Email> <Password> [<Enabled>] [<isAdmin>]
 MARCA_FIN;
     exit(0);
 }
