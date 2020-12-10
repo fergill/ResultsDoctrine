@@ -14,13 +14,15 @@ namespace MiW\Results\Tests\Entity;
 
 use MiW\Results\Entity\Result;
 use MiW\Results\Entity\User;
+use PHPUnit\Framework\TestCase;
+use DateTime;
 
 /**
  * Class ResultTest
  *
  * @package MiW\Results\Tests\Entity
  */
-class ResultTest extends \PHPUnit\Framework\TestCase
+class ResultTest extends TestCase
 {
     /**
      * @var User $user
@@ -36,7 +38,7 @@ class ResultTest extends \PHPUnit\Framework\TestCase
     private const POINTS = 2018;
 
     /**
-     * @var \DateTime $time
+     * @var DateTime $time
      */
     private $time;
 
@@ -50,7 +52,7 @@ class ResultTest extends \PHPUnit\Framework\TestCase
     {
         $this->user = new User();
         $this->user->setUsername(self::USERNAME);
-        $this->time = new \DateTime('now');
+        $this->time = new DateTime('now');
         $this->result = new Result(
             self::POINTS,
             $this->user,
