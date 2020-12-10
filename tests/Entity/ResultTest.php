@@ -71,9 +71,7 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testConstructor(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        self::assertNotNull($this->result);
     }
 
     /**
@@ -84,9 +82,7 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetId():void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        self::assertEquals(0, $this->result->getId());
     }
 
     /**
@@ -98,9 +94,8 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testResult(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->result->setResult(50);
+        self::assertEquals(50, $this->result->getResult());
     }
 
     /**
@@ -112,9 +107,7 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testUser(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        self::assertEquals($this->user, $this->result->getUser());
     }
 
     /**
@@ -126,9 +119,7 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testTime(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        self::assertEquals($this->time, $this->result->getTime());
     }
 
     /**
@@ -139,9 +130,8 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testToString(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $toString = $this->result->__toString();
+        self::assertEquals($toString, $this->result, "los strings son iguales");
     }
 
     /**
@@ -152,8 +142,7 @@ class ResultTest extends \PHPUnit\Framework\TestCase
      */
     public function testJsonSerialize(): void
     {
-        self::markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $jsonSerialize = $this->result->jsonSerialize();
+        self::assertTrue(is_array($jsonSerialize));
     }
 }
